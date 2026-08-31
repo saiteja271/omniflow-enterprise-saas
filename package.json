@@ -1,0 +1,26 @@
+{
+  "name": "omniflow-enterprise-saas",
+  "version": "1.0.0",
+  "description": "Enterprise Multi-Tenant SaaS & Modular ERP Platform with HRMS, Finance, Projects, CRM, Approvals & AI Analytics",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js",
+    "test": "node test/api.test.js",
+    "git:push": "powershell -ExecutionPolicy Bypass -File ./git-setup-and-push.ps1"
+  },
+  "keywords": [
+    "enterprise-saas",
+    "erp",
+    "hrms",
+    "finance-billing",
+    "project-management",
+    "crm",
+    "workflow-automation",
+    "multi-tenant",
+    "rbac",
+    "ai-analytics"
+  ],
+  "author": "Sai Teja",
+  "license": "MIT"
+}

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniFlow Enterprise Suite | SaaS & ERP Platform</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">Ω</div>
+      <div class="brand-info">
+        <h2>OmniFlow</h2>
+        <span>Enterprise Suite</span>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <div class="nav-section-title">Core Modules</div>
+      <a href="#" class="nav-item active" data-view="dashboard">
+        <span>📊</span> Dashboard
+      </a>
+      <a href="#" class="nav-item" data-view="hrms">
+        <span>👥</span> HRMS & Directory
+      </a>
+      <a href="#" class="nav-item" data-view="finance">
+        <span>💳</span> Finance & Invoicing
+      </a>
+      <a href="#" class="nav-item" data-view="projects">
+        <span>📋</span> Projects & Kanban
+      </a>
+      <a href="#" class="nav-item" data-view="crm">
+        <span>📈</span> CRM & Sales Pipeline
+      </a>
+      <a href="#" class="nav-item" data-view="approvals">
+        <span>⚡</span> Workflow Approvals
+      </a>
+
+      <div class="nav-section-title">System & Governance</div>
+      <a href="#" class="nav-item" data-view="audit">
+        <span>🔒</span> Audit Trail
+      </a>
+      <a href="#" class="nav-item" data-view="api-docs">
+        <span>🔌</span> REST API Docs
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="tenant-badge">
+        <span>🏢</span>
+        <div style="flex:1;overflow:hidden;">
+          <select id="tenant-selector" style="background:transparent;border:none;color:#fff;font-size:0.8rem;width:100%;outline:none;cursor:pointer;">
+            <option value="tenant-acme" style="background:#111827;">Acme Global Tech</option>
+            <option value="tenant-apex" style="background:#111827;">Apex NextGen Labs</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Application Wrapper -->
+  <div class="main-wrapper">
+    <header class="top-bar">
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" placeholder="Search employees, invoices, tasks, or leads...">
+      </div>
+
+      <div class="top-actions">
+        <span class="badge badge-success" style="padding:6px 12px;">SOC2 Type II Certified</span>
+        <div class="user-profile">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Sai Teja">
+          <div class="user-details">
+            <h4>Sai Teja</h4>
+            <span>Lead Architect (SuperAdmin)</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="content-container" id="view-content">
+      <!-- Dynamic View Mounted Here -->
+    </main>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Modal: Add Employee -->
+  <div class="modal-overlay" id="modal-add-employee">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Add New Employee</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="form-add-employee" onsubmit="event.preventDefault(); App.submitNewEmployee();">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="emp-name" class="form-control" placeholder="e.g. Alex Morgan" required>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="emp-email" class="form-control" placeholder="e.g. alex.m@acme.corp" required>
+        </div>
+        <div class="form-group">
+          <label>Designation</label>
+          <input type="text" id="emp-designation" class="form-control" placeholder="e.g. Senior Cloud Architect" required>
+        </div>
+        <div class="form-group">
+          <label>Department</label>
+          <select id="emp-department" class="form-control">
+            <option value="Engineering">Engineering</option>
+            <option value="Product & Design">Product & Design</option>
+            <option value="Sales & Marketing">Sales & Marketing</option>
+            <option value="Finance & Legal">Finance & Legal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Annual Salary ($)</label>
+          <input type="number" id="emp-salary" class="form-control" value="125000" required>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;">
+          <button type="button" class="btn btn-secondary close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Employee</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Invoice -->
+  <div class="modal-overlay" id="modal-add-invoice">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Generate New Invoice</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="form-add-invoice" onsubmit="event.preventDefault(); App.submitNewInvoice();">
+        <div class="form-group">
+          <label>Client / Enterprise Account</label>
+          <input type="text" id="inv-client" class="form-control" placeholder="e.g. CloudScale Systems Ltd" required>
+        </div>
+        <div class="form-group">
+          <label>Client Email</label>
+          <input type="email" id="inv-email" class="form-control" placeholder="e.g. billing@cloudscale.io" required>
+        </div>
+        <div class="form-group">
+          <label>Invoice Subtotal Amount ($)</label>
+          <input type="number" id="inv-amount" class="form-control" placeholder="25000" required>
+        </div>
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" id="inv-due" class="form-control">
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;">
+          <button type="button" class="btn btn-secondary close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Generate Invoice</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Task -->
+  <div class="modal-overlay" id="modal-add-task">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Create Agile Task</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="form-add-task" onsubmit="event.preventDefault(); App.submitNewTask();">
+        <div class="form-group">
+          <label>Task Title</label>
+          <input type="text" id="task-title" class="form-control" placeholder="e.g. Implement Zero Trust IAM Policy" required>
+        </div>
+        <div class="form-group">
+          <label>Assignee</label>
+          <input type="text" id="task-assignee" class="form-control" value="Sai Teja" required>
+        </div>
+        <div class="form-group">
+          <label>Priority</label>
+          <select id="task-priority" class="form-control">
+            <option value="CRITICAL">CRITICAL</option>
+            <option value="HIGH" selected>HIGH</option>
+            <option value="MEDIUM">MEDIUM</option>
+            <option value="LOW">LOW</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Estimate Hours</label>
+          <input type="number" id="task-hours" class="form-control" value="16">
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;">
+          <button type="button" class="btn btn-secondary close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Project -->
+  <div class="modal-overlay" id="modal-add-project">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Create Enterprise Initiative</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="form-add-project" onsubmit="event.preventDefault(); App.submitNewProject();">
+        <div class="form-group">
+          <label>Project Title</label>
+          <input type="text" id="proj-title" class="form-control" placeholder="e.g. Global Multi-Region Microservices Mesh" required>
+        </div>
+        <div class="form-group">
+          <label>Department</label>
+          <select id="proj-dept" class="form-control">
+            <option value="Engineering">Engineering</option>
+            <option value="Product & Design">Product & Design</option>
+            <option value="Sales & Marketing">Sales & Marketing</option>
+            <option value="Finance & Legal">Finance & Legal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Allocated Budget ($)</label>
+          <input type="number" id="proj-budget" class="form-control" value="75000">
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;">
+          <button type="button" class="btn btn-secondary close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Initialize Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Lead -->
+  <div class="modal-overlay" id="modal-add-lead">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Add Prospect / Lead</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="form-add-lead" onsubmit="event.preventDefault(); App.submitNewLead();">
+        <div class="form-group">
+          <label>Target Company Name</label>
+          <input type="text" id="lead-company" class="form-control" placeholder="e.g. Apex BioTech Solutions" required>
+        </div>
+        <div class="form-group">
+          <label>Contact Executive Name</label>
+          <input type="text" id="lead-name" class="form-control" placeholder="e.g. Jane Foster" required>
+        </div>
+        <div class="form-group">
+          <label>Estimated Deal Value ($)</label>
+          <input type="number" id="lead-value" class="form-control" value="90000" required>
+        </div>
+        <div class="form-group">
+          <label>Lead Source</label>
+          <input type="text" id="lead-source" class="form-control" value="Enterprise Executive Inbound">
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;">
+          <button type="button" class="btn btn-secondary close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Lead</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Approval -->
+  <div class="modal-overlay" id="modal-add-approval">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Submit Workflow Approval</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="form-add-approval" onsubmit="event.preventDefault(); App.submitNewApproval();">
+        <div class="form-group">
+          <label>Approval Type</label>
+          <select id="appr-type" class="form-control">
+            <option value="CAPITAL_EXPENDITURE">Capital Expenditure (CapEx)</option>
+            <option value="LEAVE_REQUEST">Paid Time Off (PTO)</option>
+            <option value="VENDOR_CONTRACT">Vendor Contract Agreement</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Title & Purpose</label>
+          <input type="text" id="appr-title" class="form-control" placeholder="e.g. AWS Cloud Reserved Instance Commitment" required>
+        </div>
+        <div class="form-group">
+          <label>Financial Amount ($) (0 if PTO)</label>
+          <input type="number" id="appr-amount" class="form-control" value="15000">
+        </div>
+        <div class="form-group">
+          <label>Urgency</label>
+          <select id="appr-urgency" class="form-control">
+            <option value="HIGH">HIGH</option>
+            <option value="MEDIUM" selected>MEDIUM</option>
+            <option value="LOW">LOW</option>
+          </select>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;">
+          <button type="button" class="btn btn-secondary close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit for Review</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Form submit scripts extension -->
+  <script>
+    App.submitNewEmployee = async function() {
+      const payload = {
+        fullName: document.getElementById('emp-name').value,
+        email: document.getElementById('emp-email').value,
+        designation: document.getElementById('emp-designation').value,
+        department: document.getElementById('emp-department').value,
+        salary: Number(document.getElementById('emp-salary').value)
+      };
+      try {
+        await API.createEmployee(payload);
+        this.showToast(`✅ Employee ${payload.fullName} added successfully`);
+        this.closeModals();
+        this.renderView(this.activeView);
+      } catch (err) {
+        this.showToast(`❌ Error: ${err.message}`);
+      }
+    };
+
+    App.submitNewInvoice = async function() {
+      const payload = {
+        clientName: document.getElementById('inv-client').value,
+        clientEmail: document.getElementById('inv-email').value,
+        amount: Number(document.getElementById('inv-amount').value),
+        dueDate: document.getElementById('inv-due').value || undefined
+      };
+      try {
+        await API.createInvoice(payload);
+        this.showToast(`✅ Invoice created for ${payload.clientName}`);
+        this.closeModals();
+        this.renderView(this.activeView);
+      } catch (err) {
+        this.showToast(`❌ Error: ${err.message}`);
+      }
+    };
+
+    App.submitNewTask = async function() {
+      const payload = {
+        title: document.getElementById('task-title').value,
+        assignee: document.getElementById('task-assignee').value,
+        priority: document.getElementById('task-priority').value,
+        estimateHours: Number(document.getElementById('task-hours').value)
+      };
+      try {
+        await API.createTask(payload);
+        this.showToast(`✅ Task '${payload.title}' added`);
+        this.closeModals();
+        this.renderView(this.activeView);
+      } catch (err) {
+        this.showToast(`❌ Error: ${err.message}`);
+      }
+    };
+
+    App.submitNewProject = async function() {
+      const payload = {
+        title: document.getElementById('proj-title').value,
+        department: document.getElementById('proj-dept').value,
+        budget: Number(document.getElementById('proj-budget').value)
+      };
+      try {
+        await API.createProject(payload);
+        this.showToast(`✅ Project '${payload.title}' initialized`);
+        this.closeModals();
+        this.renderView(this.activeView);
+      } catch (err) {
+        this.showToast(`❌ Error: ${err.message}`);
+      }
+    };
+
+    App.submitNewLead = async function() {
+      const payload = {
+        company: document.getElementById('lead-company').value,
+        contactName: document.getElementById('lead-name').value,
+        dealValue: Number(document.getElementById('lead-value').value),
+        source: document.getElementById('lead-source').value
+      };
+      try {
+        await API.createLead(payload);
+        this.showToast(`✅ Lead created for ${payload.company}`);
+        this.closeModals();
+        this.renderView(this.activeView);
+      } catch (err) {
+        this.showToast(`❌ Error: ${err.message}`);
+      }
+    };
+
+    App.submitNewApproval = async function() {
+      const payload = {
+        type: document.getElementById('appr-type').value,
+        title: document.getElementById('appr-title').value,
+        amount: Number(document.getElementById('appr-amount').value),
+        urgency: document.getElementById('appr-urgency').value
+      };
+      try {
+        await API.createApproval(payload);
+        this.showToast(`✅ Approval request submitted`);
+        this.closeModals();
+        this.renderView(this.activeView);
+      } catch (err) {
+        this.showToast(`❌ Error: ${err.message}`);
+      }
+    };
+  </script>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
